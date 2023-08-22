@@ -1,0 +1,30 @@
+<meta>
+    <script src="settings.lua" type="client" cache="false"/>
+    <script src="c.lua" type="client" cache="false"/>
+    <script src="s.lua" type="server"/>
+
+    <file src="img/bg.png"/>
+    <file src="img/close.png"/>
+    <file src="img/close_a.png"/>
+    <file src="img/towary.png"/>
+    <file src="img/towary_a.png"/>
+    <file src="img/upgrade.png"/>
+    <file src="img/upgrade_a.png"/>
+
+    <file src="img/rows.png"/>
+    <file src="img/rows_a.png"/>
+
+    <file src="img/box.png"/>
+    <file src="img/box_unique.png"/>
+    
+    <file src="img/bginfo.png"/>
+
+    <file src="img/unique.png"/>
+    <file src="img/unique_a.png"/>
+    <file src="img/unique2.png"/>
+    <file src="img/unique2_a.png"/>
+    <file src="img/unique3.png"/>
+    <file src="img/unique3_a.png"/>
+
+    <file src="font.otf"/>
+</meta>
