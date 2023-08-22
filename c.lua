@@ -125,7 +125,7 @@ local function click(b,s)
             close(localPlayer)
             return
         elseif isMouseInPosition(elements.scale.b_towary[1], elements.scale.b_towary[2], elements.scale.b_towary[3], elements.scale.b_towary[4]) then
-            elements.title = "Rynek ładunków"
+            elements.title = "Rynek ładunków    XD"
             elements.page = 0
             return
         elseif isMouseInPosition(elements.scale.b_upgrade[1], elements.scale.b_upgrade[2], elements.scale.b_upgrade[3], elements.scale.b_upgrade[4]) then
