@@ -32,3 +32,4 @@ mnoznik_points = 0.02
 mnoznik_upgrade_zarobek = 1.8
 tp_before = true
 masa_mnoznik = 300
+start_marker = {866.74786, -1208.45911, 16}

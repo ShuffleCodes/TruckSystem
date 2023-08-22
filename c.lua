@@ -19,8 +19,8 @@ end
 
 
 local elements = {
-    start_marker = createMarker(866.74786, -1208.45911, 16, "cylinder", 3, 255, 255, 255, 50),
-    blip = createBlip(866.74786, -1208.45911, 16, 51, 1),
+    start_marker = createMarker(start_marker[1], start_marker[2], start_marker[3], "cylinder", 3, 255, 255, 255, 50),
+    blip = createBlip(start_marker[1], start_marker[2], start_marker[3], 51, 1),
     active_transport,
     scale = {
         ["bg"] = {1133/zoom, 360/zoom, 1175/zoom, 720/zoom},
