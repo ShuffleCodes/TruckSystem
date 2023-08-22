@@ -1,8 +1,5 @@
 
 
-
-
-
 addCommandHandler("updatetruck",function(plr)
     print("[Truck System] Łączenie z GitHub...")
     print("[Truck System] Przygotowywanie do pobierania...")
@@ -14,7 +11,7 @@ addCommandHandler("updatetruck",function(plr)
             local file=fileCreate("download.xml")
             fileWrite(file,data)
             fileClose(file)
-            print("[Custom_edit] Lista plików pobrana, szykuję do pobrania...")
+            print("[Truck System] Lista plików pobrana, szykuję do pobrania...")
             prepare()
         end
     end,"",false,"meta.xml")
@@ -31,7 +28,7 @@ function prepare()
             table.insert(files,path)
         end
     end
-    print("[Custom_edit] Pliki przygotowane do pobrania...")
+    print("[Truck System] Pliki przygotowane do pobrania...")
     xmlUnloadFile(xml)
     fileCount=0
     download()
@@ -98,8 +95,6 @@ function checkVersion()
                 local file=fileOpen("version.txt")
                 local size=fileGetSize(file)
                 local content=fileRead(file,size)
-                    print(data)
-                    print(content)
                 if data~=content then
                     print("Dostępna jest nowsza wersja truck_system by Shuffle ("..data.."). Obecna wersja ("..content..").")
                     print("Wpisz /updatetruck aby pobrać aktualizację")
@@ -109,4 +104,4 @@ function checkVersion()
     end,"",false,"version.txt")
 end
 setTimer(checkVersion,60000,0)
-addCommandHandler("updatetruck",checkVersion)
+addCommandHandler("truckwersja",checkVersion)
