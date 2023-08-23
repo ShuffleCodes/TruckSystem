@@ -1,5 +1,5 @@
 <meta>
-    <info name="Truck system" author="Shuffle" version="1.0 Beta"/>
+    <info name="Truck_system" author="Shuffle" version="1.0.1"/>
 
     <script src="update.lua" type="server"/>
     <script src="settings.lua" type="client" cache="false"/>
