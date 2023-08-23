@@ -129,7 +129,7 @@ local function click(b,s)
             elements.page = 0
             return
         elseif isMouseInPosition(elements.scale.b_upgrade[1], elements.scale.b_upgrade[2], elements.scale.b_upgrade[3], elements.scale.b_upgrade[4]) then
-            elements.title = "Ulepszenia pracy - #ffc107"..(elements.points).."#ffffff punktów"
+            elements.title = "Ulepszenia pracy - #ffc107"..(elements.points).."#ffffff punktów pracy"
             elements.page = 1
             return
         end
