@@ -98,6 +98,8 @@ function checkVersion()
                 if data~=content then
                     print("Dostępna jest nowsza wersja truck_system by Shuffle ("..data.."). Obecna wersja ("..content..").")
                     print("Wpisz /updatetruck aby pobrać aktualizację")
+                else
+                    print("Zasób truck_system jest aktualny. ("..content..")")
                 end
             end
         end
