@@ -115,7 +115,7 @@ local function buyNewUpgrade(el,type)
             elements.shield = 1
             elements.points = elements.points - elements.costs[tonumber(type)]
         end
-        elements.title = "Ulepszenia pracy - #ffc107"..(elements.points).."#ffffff punktów"
+        elements.title = "Ulepszenia pracy - #ffc107"..(elements.points).."#ffffff punktów pracy"
     end
 end
 
