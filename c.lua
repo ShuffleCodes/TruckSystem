@@ -115,7 +115,7 @@ local function buyNewUpgrade(el,type)
             elements.shield = 1
             elements.points = elements.points - elements.costs[tonumber(type)]
         end
-        elements.title = "Ulepszenia pracy - #ffc107"..(elements.points).."#ffffff punktów pracy"
+        elements.title = "Ulepszenia pracy - #ffc107"..(elements.points).."#ffffff punktów"
     end
 end
 
@@ -129,7 +129,7 @@ local function click(b,s)
             elements.page = 0
             return
         elseif isMouseInPosition(elements.scale.b_upgrade[1], elements.scale.b_upgrade[2], elements.scale.b_upgrade[3], elements.scale.b_upgrade[4]) then
-            elements.title = "Ulepszenia pracy - #ffc107"..(elements.points).."#ffffff punktów pracy"
+            elements.title = "Ulepszenia pracy - #ffc107"..(elements.points).."#ffffff punktów"
             elements.page = 1
             return
         end
