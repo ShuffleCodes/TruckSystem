@@ -24,13 +24,13 @@ end)
 addEvent("buyUpgrade", true)
 addEventHandler("buyUpgrade", root, function (type, cost)
     if type == 1 then
-        dbQuery(db, "UPDATE Trucks SET Upg1 = 1, Points = Points - ? WHERE Serial = ?", cost, getPlayerSerial(source))
+        dbExec(db, "UPDATE Trucks SET Upg1 = 1, Points = Points - ? WHERE Serial = ?", cost, getPlayerSerial(source))
         outputChatBox("Zakupiłeś ulepszenie : Ulepszony zarobek!", source, 255, 255, 255)
     elseif type == 2 then
-        dbQuery(db, "UPDATE Trucks SET Upg2 = 1, Points = Points - ? WHERE Serial = ?", cost, getPlayerSerial(source))
+        dbExec(db, "UPDATE Trucks SET Upg2 = 1, Points = Points - ? WHERE Serial = ?", cost, getPlayerSerial(source))
         outputChatBox("Zakupiłeś ulepszenie : Unikalne ładunki!", source, 255, 255, 255)
     elseif type == 3 then
-        dbQuery(db, "UPDATE Trucks SET Upg3 = 1, Points = Points - ? WHERE Serial = ?", cost, getPlayerSerial(source))
+        dbExec(db, "UPDATE Trucks SET Upg3 = 1, Points = Points - ? WHERE Serial = ?", cost, getPlayerSerial(source))
         outputChatBox("Zakupiłeś ulepszenie : Ulepszona wytrzymałość!", source, 255, 255, 255)
     end
 end)
@@ -89,14 +89,14 @@ addEventHandler("damage:Truck", root, function(veh, loss, shield)
 end)
 
 addEvent("end:Truck", true)
-addEventHandler("end:Truck", root, function(tp, points, rem)
+addEventHandler("end:Truck", root, function(tp, points, rem, xyz)
     destroyElement(vehs[source])
     destroyElement(trailers[source])
     local s = dbQuery(db,"UPDATE Trucks SET Points = Points + ? WHERE Serial = ?", tonumber(points), getPlayerSerial(source))
     givePlayerMoney(source, rem)
     if tp then
         setTimer(function(source)
-            setElementPosition(source, 872.27826, -1210.12634, 16.97656)
+            setElementPosition(source, xyz[1], xyz[2], xyz[3])
         end, 900, 1, source)
     end
     dbFree(s)

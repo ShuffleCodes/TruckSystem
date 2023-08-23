@@ -314,7 +314,7 @@ function targetHit(el)
                 local rem = math.floor(trans.cost * (math.floor(trans.stan)/100))
                 local points = math.floor(tonumber(rem) * tonumber(mnoznik_points))
                 outputChatBox("Zakończyłeś zlecenie, na Twoje konto wpływa "..rem.." $ i "..points.." punktów.", 255, 255, 255)
-                triggerServerEvent("end:Truck", el, tp_before, points, rem)
+                triggerServerEvent("end:Truck", el, tp_before, points, rem, tp_before_xyz)
                 removeEventHandler("onClientRender", root, render_info)
                 if isElement(blip) then
                     destroyElement(blip)

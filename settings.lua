@@ -36,3 +36,4 @@ mnoznik_upgrade_zarobek = 1.8
 tp_before = true
 masa_mnoznik = 300
 start_marker = {866.74786, -1208.45911, 16}
+tp_before_xyz = {875.25568, -1211.09192, 16.97656}
