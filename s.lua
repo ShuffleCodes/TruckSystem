@@ -92,12 +92,11 @@ addEvent("end:Truck", true)
 addEventHandler("end:Truck", root, function(tp, points, rem, xyz)
     destroyElement(vehs[source])
     destroyElement(trailers[source])
-    local s = dbQuery(db,"UPDATE Trucks SET Points = Points + ? WHERE Serial = ?", tonumber(points), getPlayerSerial(source))
+    dbExec(db,"UPDATE Trucks SET Points = Points + ? WHERE Serial = ?", tonumber(points), getPlayerSerial(source))
     givePlayerMoney(source, rem)
     if tp then
         setTimer(function(source)
             setElementPosition(source, xyz[1], xyz[2], xyz[3])
         end, 900, 1, source)
     end
-    dbFree(s)
 end)

@@ -29,7 +29,7 @@ target = {
     [10] = {1899.55225, 2143.20581, 10.82031},
 }
 
-
+--USTAWIENIA GRY
 mnoznik_unique = 1.5
 mnoznik_points = 0.02
 mnoznik_upgrade_zarobek = 1.8
@@ -37,3 +37,4 @@ tp_before = true
 masa_mnoznik = 300
 start_marker = {866.74786, -1208.45911, 16}
 tp_before_xyz = {875.25568, -1211.09192, 16.97656}
+refresh_rate = 60000*3 --3 minuty

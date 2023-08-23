@@ -99,7 +99,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
     end, 500, 1)
     setTimer(function()
         startRefresh()
-    end,5000,0)
+    end,refresh_rate,0)
 end)
 
 local function buyNewUpgrade(el,type)
