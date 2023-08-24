@@ -180,11 +180,12 @@ local function click(b,s)
                         if (elements.towary[i]["unique"]) then
                             cost = math.floor(cost * tonumber(mnoznik_unique))
                         end
-                        blip = createBlip(elements.towary[i]["dest"][1],elements.towary[i]["dest"][2],elements.towary[i]["dest"][3],41,2)
+                        
                         local rem = math.floor(cost * (math.floor(elements.towary[i]["distance"]) / 1000))
                         elements.active_transport = {name = name, cost = rem, weight = weight, stan = 100, dest = elements.towary[i]["dest"]}
                         triggerServerEvent("giveTransport", localPlayer, elements.towary[i]["trailer"], weight, masa_mnoznik )
                         local target_marker = createMarker(elements.towary[i]["dest"][1],elements.towary[i]["dest"][2],elements.towary[i]["dest"][3], "cylinder", 4, 255, 255, 255, 50)
+                        blip = createBlipAttachedTo(target_marker,41,2)
                         setElementData(target_marker,"Truck:Target", localPlayer)
                         addEventHandler("onClientRender", root, render_info)
                         close(localPlayer)
