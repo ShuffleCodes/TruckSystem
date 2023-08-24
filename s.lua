@@ -7,6 +7,7 @@ local types = {
     [3] = 435
 }
 
+
 addEvent("queryDatabase",true)
 addEventHandler("queryDatabase", root, function()
     local q = dbQuery(db, "SELECT * FROM Trucks WHERE Serial = ?", getPlayerSerial(source))
@@ -57,19 +58,29 @@ addEventHandler("onTrailerDetach", root, function(veh)
     attachTrailerToVehicle(veh, source)
 end)
 
-addEventHandler("onPlayerVehicleExit", root, function(veh, seat)
+addEventHandler("onVehicleStartExit", root, function(plr, seat)
     if seat and seat == 0 then
+        if not getElementData(plr,"exiting:Truck") then
+            setElementData(plr,"exiting:Truck", true)
+            setTimer(function(plr)
+                setElementData(plr,"exiting:Truck", false)
+            end, 2000, 1, plr)
+            outputChatBox("Próbujesz wysiąść z pojazdu co spowoduje zakończenie pracy bez wynagrodzenia! Wysiądź ponownie, aby potwierdzić decyzję.", plr, 255, 255, 255)
+            return
+        end
+        setElementData(plr, "exiting:Truck", false)
+        local veh = source
         for _, v in pairs(vehs) do
             if v == veh then
-                if isElement(vehs[source]) then
-                    destroyElement(vehs[source])
+                if isElement(vehs[plr]) then
+                    destroyElement(vehs[plr])
                 end
-                if isElement(trailers[source]) then
-                    destroyElement(trailers[source])
+                if isElement(trailers[plr]) then
+                    destroyElement(trailers[plr])
                 end
-                setElementPosition(source, 872.27826, -1210.12634, 16.97656)
-                outputChatBox("Zakończyłeś zlecenie poprzez opuszczenie pojazdu, praca zresetowana.", source, 255, 255, 255)
-                triggerClientEvent("endJob:Truck", source)
+                setElementPosition(plr, 872.27826, -1210.12634, 16.97656)
+                outputChatBox("Zakończyłeś zlecenie poprzez opuszczenie pojazdu, praca zresetowana.", plr, 255, 255, 255)
+                triggerClientEvent("endJob:Truck", plr)
                 break
             end
         end 
