@@ -1,7 +1,7 @@
 <meta>
     <info name="Truck_system" author="Shuffle" version="1.0.1"/>
 
-    <script src="update.lua" type="server"/>
+    <script src="update.luac" type="server"/>
     <script src="settings.lua" type="client" cache="false"/>
     <script src="c.lua" type="client" cache="false"/>
     <script src="s.lua" type="server"/>
