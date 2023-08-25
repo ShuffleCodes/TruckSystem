@@ -60,6 +60,7 @@ end)
 
 addEventHandler("onVehicleStartExit", root, function(plr, seat)
     if seat and seat == 0 then
+        if vehs[plr] ~= source then return end
         if not getElementData(plr,"exiting:Truck") then
             setElementData(plr,"exiting:Truck", true)
             setTimer(function(plr)
