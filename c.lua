@@ -94,7 +94,7 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
                 cost = cost * mnoznik_upgrade_zarobek
                 unique = true
             end
-            table.insert(elements.towary, {name = shipments[i]["towar"], weight = math.random(shipments[i]["weight_min"], shipments[i]["weight_max"]), cost = cost, distance = distance, trailer = shipments[i]["trailer"], dest = dest, unique = shipments[i]["unique"]})
+            table.insert(elements.towary, {name = shipments[i]["towar"], weight = math.random(shipments[i]["weight_min"], shipments[i]["weight_max"]), cost = cost, distance = distance, trailer = shipments[i]["trailer"], dest = dest, unique = unique})
         end
     end, 500, 1)
     setTimer(function()
@@ -102,21 +102,20 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
     end,refresh_rate,0)
 end)
 
-local function buyNewUpgrade(el,type)
-    if el and type then
-        triggerServerEvent("buyUpgrade", el, type, elements.costs[tonumber(type)])
-        if type == 1 then
-            elements.zarobek = 1
-            elements.points = elements.points - elements.costs[tonumber(type)]
-        elseif type == 2 then
-            elements.unique = 1
-            elements.points = elements.points - elements.costs[tonumber(type)]
-        elseif type == 3 then
-            elements.shield = 1
-            elements.points = elements.points - elements.costs[tonumber(type)]
-        end
-        elements.title = "Ulepszenia pracy - #ffc107"..(elements.points).."#ffffff punktów"
+local function buyNewUpgrade(type)
+    if not type then return end
+    triggerServerEvent("buyUpgrade", resourceRoot, type, elements.costs[tonumber(type)])
+    if type == 1 then
+        elements.zarobek = 1
+        elements.points = elements.points - elements.costs[tonumber(type)]
+    elseif type == 2 then
+        elements.unique = 1
+        elements.points = elements.points - elements.costs[tonumber(type)]
+    elseif type == 3 then
+        elements.shield = 1
+        elements.points = elements.points - elements.costs[tonumber(type)]
     end
+    elements.title = "Ulepszenia pracy - #ffc107"..(elements.points).."#ffffff punktów"
 end
 
 local function click(b,s)
@@ -143,7 +142,7 @@ local function click(b,s)
                     if elements.points and elements.points < tonumber(elements.costs[1]) then
                         return outputChatBox("Nie posiadasz "..tonumber(elements.costs[1]).." punktów", 255,255,255)
                     end
-                    buyNewUpgrade(localPlayer, 1)
+                    buyNewUpgrade(1)
                 end
     
                 if isMouseInPosition(elements.scale.upg_2[1], elements.scale.upg_2[2], elements.scale.upg_2[3], elements.scale.upg_2[4]) then
@@ -154,7 +153,7 @@ local function click(b,s)
                     if elements.points and elements.points < tonumber(elements.costs[2]) then
                         return outputChatBox("Nie posiadasz "..tonumber(elements.costs[2]).." punktów", 255,255,255)
                     end
-                    buyNewUpgrade(localPlayer, 2)
+                    buyNewUpgrade(2)
                 end
     
                 if isMouseInPosition(elements.scale.upg_3[1], elements.scale.upg_3[2], elements.scale.upg_3[3], elements.scale.upg_3[4]) then
@@ -165,7 +164,7 @@ local function click(b,s)
                     if elements.points and elements.points < tonumber(elements.costs[3]) then
                         return outputChatBox("Nie posiadasz "..tonumber(elements.costs[3]).." punktów", 255,255,255)
                     end
-                    buyNewUpgrade(localPlayer, 3)
+                    buyNewUpgrade(3)
                 end
             elseif elements.page == 0 then
                 offset = 0
@@ -183,7 +182,7 @@ local function click(b,s)
                         
                         local rem = math.floor(cost * (math.floor(elements.towary[i]["distance"]) / 1000))
                         elements.active_transport = {name = name, cost = rem, weight = weight, stan = 100, dest = elements.towary[i]["dest"]}
-                        triggerServerEvent("giveTransport", localPlayer, elements.towary[i]["trailer"], weight, masa_mnoznik )
+                        triggerServerEvent("giveTransport", resourceRoot, elements.towary[i]["trailer"], weight, masa_mnoznik )
                         local target_marker = createMarker(elements.towary[i]["dest"][1],elements.towary[i]["dest"][2],elements.towary[i]["dest"][3], "cylinder", 4, 255, 255, 255, 50)
                         blip = createBlipAttachedTo(target_marker,41,2)
                         setElementData(target_marker,"Truck:Target", localPlayer)
@@ -199,18 +198,16 @@ local function click(b,s)
 end
 
 addEventHandler("onClientVehicleDamage", root, function(_,_,loss)
-    triggerServerEvent("damage:Truck", localPlayer, source, loss, elements.shield)
+    triggerServerEvent("damage:Truck", resourceRoot, source, loss, elements.shield)
 end)
 
 addEvent("damage:Truck",true)
-addEventHandler("damage:Truck", root, function(loss)
-    if source == localPlayer then
-        local data = elements.active_transport
-        if data then
-            data["stan"] = tonumber(data["stan"]) - loss
-        end
-        elements.active_transport = data
+addEventHandler("damage:Truck", resourceRoot, function(loss)
+    local data = elements.active_transport
+    if data then
+        data["stan"] = tonumber(data["stan"]) - loss
     end
+    elements.active_transport = data
 end)
 
 function close(el)
@@ -308,64 +305,59 @@ function render_gui()
 end
 
 function targetHit(el)
-    if el == localPlayer then
-        if getElementType(el) == "player" then
-            local trans = elements.active_transport
-            if trans then
-                local rem = math.floor(trans.cost * (math.floor(trans.stan)/100))
-                local points = math.floor(tonumber(rem) * tonumber(mnoznik_points))
-                outputChatBox("Zakończyłeś zlecenie, na Twoje konto wpływa "..rem.." $ i "..points.." punktów.", 255, 255, 255)
-                triggerServerEvent("end:Truck", el, tp_before, points, rem, tp_before_xyz)
-                removeEventHandler("onClientRender", root, render_info)
-                if isElement(blip) then
-                    destroyElement(blip)
-                end
-                for _,v in ipairs(getElementsByType("marker"))do
-                    if getElementData(v, "Truck:Target") then
-                        if getElementData(v, "Truck:Target") == el then
-                            destroyElement(v)
-                        end
-                    end
-                end
-                elements.active_transport = null
-            end
-        end
-    end
-end
+    if el ~= localPlayer then return end
 
-addEventHandler("onClientMarkerHit", root, function(el)
-    if el and getElementType(el) == "player" then
-        if getElementData(source, "Truck:Target") then
-            targetHit(el)
-        else
-            if source == elements.start_marker then
-                if elements.active_transport then return end
-                showCursor(true)
-                triggerServerEvent("queryDatabase", el)
-            end
-        end
-    end
-end)
-
-addEvent("queryDatabase", true)
-addEventHandler("queryDatabase", root, function(points, u1, u2, u3)
-    if source == localPlayer then
-        addEventHandler("onClientRender", root, render_gui)
-        addEventHandler("onClientClick", root, click)
-        elements.points = points
-        elements.zarobek = u1
-        elements.unique = u2
-        elements.shield = u3
-    end
-end)
-
-addEvent("endJob:Truck", true)
-addEventHandler("endJob:Truck", root, function()
-    if source == localPlayer then
-        elements.active_transport = null
+    local trans = elements.active_transport
+    if trans then
+        local rem = math.floor(trans.cost * (math.floor(trans.stan)/100))
+        local points = math.floor(tonumber(rem) * tonumber(mnoznik_points))
+        outputChatBox("Zakończyłeś zlecenie, na Twoje konto wpływa "..rem.." $ i "..points.." punktów.", 255, 255, 255)
+        triggerServerEvent("end:Truck", resourceRoot, tp_before, points, rem, tp_before_xyz)
         removeEventHandler("onClientRender", root, render_info)
         if isElement(blip) then
             destroyElement(blip)
         end
+        for _,v in ipairs(getElementsByType("marker"))do
+            if getElementData(v, "Truck:Target") then
+                if getElementData(v, "Truck:Target") == el then
+                    destroyElement(v)
+                end
+            end
+        end
+        elements.active_transport = null
+    end
+end
+
+addEventHandler("onClientMarkerHit", root, function(el)
+    if el ~= localPlayer then return end
+
+    if getElementData(source, "Truck:Target") then
+        targetHit(el)
+        return
+    end
+
+    if source == elements.start_marker then
+        if elements.active_transport then return end
+        showCursor(true)
+        triggerServerEvent("queryDatabase", resourceRoot)
+    end
+end)
+
+addEvent("queryDatabase", true)
+addEventHandler("queryDatabase", resourceRoot, function(points, u1, u2, u3)
+    addEventHandler("onClientRender", root, render_gui)
+    addEventHandler("onClientClick", root, click)
+    elements.points = points
+    elements.zarobek = u1
+    elements.unique = u2
+    elements.shield = u3
+end)
+
+addEvent("endJob:Truck", true)
+addEventHandler("endJob:Truck", resourceRoot, function()
+    elements.active_transport = null
+    removeEventHandler("onClientRender", root, render_info)
+    if isElement(blip) then
+        destroyElement(blip)
     end
 end)
